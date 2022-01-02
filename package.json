@@ -1,17 +1,22 @@
 {
-  "name": "vtk-app-test",
+  "name": "my-vtkjs-app",
   "version": "1.0.0",
-  "description": "test-app using vtk.js",
+  "description": "vtk.js application",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --progress --mode=production",
-    "dev": "webpack --progress --mode=development",
-    "start": "webpack serve --progress --mode=development --static=dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
+        "build": "webpack --progress --mode=development",
+        "start": "webpack serve --progress --mode=development --static=dist",
+        "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "vtk.js": "^21.3.1"
+    "@kitware/vtk.js": "^21.2.2",
+    "vtk.js": "^21.2.2"
+  },
+  "devDependencies": {
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.6.0"
   }
 }

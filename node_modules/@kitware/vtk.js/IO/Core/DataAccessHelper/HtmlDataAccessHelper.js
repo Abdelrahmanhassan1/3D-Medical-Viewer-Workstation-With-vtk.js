@@ -1,0 +1,148 @@
+import pako from 'pako';
+import macro from '../../../macros.js';
+import Base64 from '../../../Common/Core/Base64.js';
+import Endian from '../../../Common/Core/Endian.js';
+import { DataTypeByteSize } from '../../../Common/Core/DataArray/Constants.js';
+import { registerType } from '../DataAccessHelper.js';
+
+var vtkErrorMacro = macro.vtkErrorMacro,
+    vtkDebugMacro = macro.vtkDebugMacro;
+var requestCount = 0;
+
+function getContent(url) {
+  var el = document.querySelector(".webResource[data-url=\"".concat(url, "\"]"));
+  return el ? el.innerHTML : null;
+}
+
+function getElement(url) {
+  return document.querySelector(".webResource[data-url=\"".concat(url, "\"]"));
+}
+
+function removeLeadingSlash(str) {
+  return str[0] === '/' ? str.substr(1) : str;
+}
+
+function fetchText() {
+  var url = arguments.length > 1 ? arguments[1] : undefined;
+  return new Promise(function (resolve, reject) {
+    var txt = getContent(url);
+
+    if (txt === null) {
+      reject(new Error("No such text ".concat(url)));
+    } else {
+      resolve(txt);
+    }
+  });
+}
+
+function fetchJSON() {
+  var url = arguments.length > 1 ? arguments[1] : undefined;
+  return new Promise(function (resolve, reject) {
+    var txt = getContent(removeLeadingSlash(url));
+
+    if (txt === null) {
+      reject(new Error("No such JSON ".concat(url)));
+    } else {
+      resolve(JSON.parse(txt));
+    }
+  });
+}
+
+function fetchArray() {
+  var instance = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var baseURL = arguments.length > 1 ? arguments[1] : undefined;
+  var array = arguments.length > 2 ? arguments[2] : undefined;
+  var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+  return new Promise(function (resolve, reject) {
+    var url = removeLeadingSlash([baseURL, array.ref.basepath, options.compression ? "".concat(array.ref.id, ".gz") : array.ref.id].join('/'));
+    var txt = getContent(url);
+
+    if (txt === null) {
+      reject(new Error("No such array ".concat(url)));
+    } else {
+      if (array.dataType === 'string') {
+        var bText = atob(txt);
+
+        if (options.compression) {
+          bText = pako.inflate(bText, {
+            to: 'string'
+          });
+        }
+
+        array.values = JSON.parse(bText);
+      } else {
+        var uint8array = new Uint8Array(Base64.toArrayBuffer(txt));
+        array.buffer = new ArrayBuffer(uint8array.length); // copy uint8array to buffer
+
+        var view = new Uint8Array(array.buffer);
+        view.set(uint8array);
+
+        if (options.compression) {
+          if (array.dataType === 'string' || array.dataType === 'JSON') {
+            array.buffer = pako.inflate(new Uint8Array(array.buffer), {
+              to: 'string'
+            });
+          } else {
+            array.buffer = pako.inflate(new Uint8Array(array.buffer)).buffer;
+          }
+        }
+
+        if (array.ref.encode === 'JSON') {
+          array.values = JSON.parse(array.buffer);
+        } else {
+          if (Endian.ENDIANNESS !== array.ref.encode && Endian.ENDIANNESS) {
+            // Need to swap bytes
+            vtkDebugMacro("Swap bytes of ".concat(array.name));
+            Endian.swapBytes(array.buffer, DataTypeByteSize[array.dataType]);
+          }
+
+          array.values = macro.newTypedArray(array.dataType, array.buffer);
+        }
+
+        if (array.values.length !== array.size) {
+          vtkErrorMacro("Error in FetchArray: ".concat(array.name, " does not have the proper array size. Got ").concat(array.values.length, ", instead of ").concat(array.size));
+        }
+      } // Done with the ref and work
+
+
+      delete array.ref;
+
+      if (--requestCount === 0 && instance.invokeBusy) {
+        instance.invokeBusy(false);
+      }
+
+      if (instance.modified) {
+        instance.modified();
+      }
+
+      resolve(array);
+    }
+  });
+} // ----------------------------------------------------------------------------
+
+
+function fetchImage() {
+  var url = arguments.length > 1 ? arguments[1] : undefined;
+  return new Promise(function (resolve, reject) {
+    var img = getElement(url);
+
+    if (img) {
+      resolve(img);
+    } else {
+      reject(new Error("No such image ".concat(url)));
+    }
+  });
+} // ----------------------------------------------------------------------------
+
+
+var HtmlDataAccessHelper = {
+  fetchJSON: fetchJSON,
+  fetchText: fetchText,
+  fetchArray: fetchArray,
+  fetchImage: fetchImage
+};
+registerType('html', function (options) {
+  return HtmlDataAccessHelper;
+}); // Export fetch methods
+
+export { HtmlDataAccessHelper as default };
