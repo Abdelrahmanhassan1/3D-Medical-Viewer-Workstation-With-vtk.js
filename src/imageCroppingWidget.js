@@ -19,14 +19,15 @@ import vtkVolumeMapper from '@kitware/vtk.js//Rendering/Core/VolumeMapper';
 import vtkPlane from '@kitware/vtk.js/Common/DataModel/Plane';
 
 // import piecewise from './pieceWiseGuass';
-// import surfaceRendering from './loadWithVolume';
+// import surfaceRenderer from './surfaceRender';
 
 // Force the loading of HttpDataAccessHelper to support gzip decompression
 import '@kitware/vtk.js/IO/Core/DataAccessHelper/HttpDataAccessHelper';
+// import surfaceRenderer from './surfaceRender';
 
 //import controlPanel from './controlPanel.html';
 
-function imageCropping(){
+function imageCroppingfunc(){
   
   const controlPanel = 
 `
@@ -79,9 +80,36 @@ function imageCropping(){
   </table>
   <hr>
   
-  <button class="btnWidget" onclick="location.href='http://localhost:8080/'">Surface Rendering</button></table>
+  <button class="btnWidget" onclick="location.href='http://localhost:8080/'">Home Page</button>
+
+  </table>
   <br>
-  <style>       
+  <style>  
+        .btnWidget {
+          background-color: #c2fbd7;
+          border-radius: 100px;
+          box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset,rgba(44, 187, 99, .15) 0 1px 2px,rgba(44, 187, 99, .15) 0 2px 4px,rgba(44, 187, 99, .15) 0 4px 8px,rgba(44, 187, 99, .15) 0 8px 16px,rgba(44, 187, 99, .15) 0 16px 32px;
+          color: green;
+          cursor: pointer;
+          font-family: cursive;
+          padding: 7px 20px;
+          text-align: center;
+          text-decoration: none;
+          transition: all 250ms;
+          border: 0;
+          margin:5px;
+          font-size: 15px;
+          user-select: none;
+          -webkit-user-select: none;
+          touch-action: manipulation;
+          color: black;
+          font-weight: bold;
+        }
+        
+        .btnWidget:hover {
+          box-shadow: rgba(44,187,99,.35) 0 -25px 18px -14px inset,rgba(44,187,99,.25) 0 1px 2px,rgba(44,187,99,.25) 0 2px 4px,rgba(44,187,99,.25) 0 4px 8px,rgba(44,187,99,.25) 0 8px 16px,rgba(44,187,99,.25) 0 16px 32px;
+          transform: scale(1.05) rotate(-1deg);
+        }     
         .labelWidget{
           color: #d2691e;
           font-size: 1.5rem;
@@ -287,8 +315,8 @@ reader.setUrl(`https://kitware.github.io/vtk-js/data/volume/LIDC2.vti`).then(() 
 
 fullScreenRenderer.addController(controlPanel);
 
-// const surfacebtn = document.querySelector('#surfacebtn');
-// surfacebtn.addEventListener("click", surfaceRendering);
+// const surfRenderbtn = document.querySelector('#surfRenderbtn');
+// surfRenderbtn.addEventListener("click", surfaceRenderer);
 
 // const piecebtn = document.querySelector('#piecebtn');
 // piecebtn.addEventListener("click", piecewise);
@@ -317,4 +345,4 @@ for (let i = 0; i < buttons.length; i++) {
 }
 }
 
-export default imageCropping;
+export default imageCroppingfunc;
