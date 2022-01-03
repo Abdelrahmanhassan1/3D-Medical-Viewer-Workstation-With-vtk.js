@@ -1,15 +1,5 @@
 # Computer Graphics VTK.js Project
 
-## Team Members
-
-| Names                                      | Sec   | B.N |
-|--------------------------------------      |:----- |:----|                                                                           
-| Abdelrahman Hassan Sobhei                  | 1     | 49  |
-| Safwan Mahmoud                             | 1     | 43  |
-| Esraa Osama                                | 1     | 10  |
-| Maryam Mahmoud Muhammed Elsayed            | 2     | 29  |
-
-
 ## About Our Project
 
 ### First, we disscused some examples supported by VTK.js website to understand the mechanism of it.
