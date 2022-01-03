@@ -1,10 +1,16 @@
 # Computer Graphics VTK.js Project
 
-## Team Members: 
-1. Abdelrahman Hassan Sobhei    Sec:1 B.N:49
-2. Safwan Mahmoud               Sec:1 B.N:43
-3. Maryam Mahmoud               Sec:2 B.N:29
-4. Esraa Osama                  Sec:1 B.N:10
+## Team Members
+
+| Names                                      | Sec   | B.N |
+|--------------------------------------      |:----- |:----|                                                                           
+| Abdelrahman Hassan Sobhei                  | 1     | 49  |
+| Safwan Mahmoud                             | 1     | 43  |
+| Esraa Osama                                | 1     | 10  |
+| Maryam Mahmoud Muhammed Elsayed            | 2     | 29  |
+
+
+## About Our Project
 
 ### First, we disscused some examples supported by VTK.js website to understand the mechanism of it.
  Then we build our project by rendering three differnet widgets:
@@ -39,11 +45,11 @@ reader
 
 Then we applied some styles to our control panel to appear as shown above; like font-size, font-family, color,....<br>
 After that we wanted to merge all files to work together so we used buttons to connect the files.<br>
-This was done in Javascript using addEventListener method.<br>
+This was done in Javascript using `addEventListener` method.<br>
 
 In Surface REndering file --> index.js
 
-In HTML:
+* In HTML:
 
 ```
 <button class="btnWidget" id="chestbtn">Image Cropping</button>
@@ -51,7 +57,7 @@ In HTML:
 <button class="btnWidget" id="piecebtn">Ray Casting</button>
 ```
 
-In Javascript:
+* In Javascript:
 
 ```
 const chestbtn = document.querySelector('#chestbtn');
@@ -61,7 +67,7 @@ const piecebtn = document.querySelector('#piecebtn');
 piecebtn.addEventListener("click", piecewise);
 ```
 
-There was a problem here in applying the addEventListener as it wasn't connect to the button and the solution was that to place these functions below the addController method in Javascript file. <br>
+There was a problem here in applying the addEventListener as it wasn't connect to the button and the solution was that to place these functions below the `addController` method in Javascript file. <br>
 
 ```
 fullScreenRenderWindow.addController(controlPanel);

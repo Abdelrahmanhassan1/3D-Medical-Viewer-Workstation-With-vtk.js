@@ -19,12 +19,8 @@ import vtkColorMaps from '@kitware/vtk.js/Rendering/Core/ColorTransferFunction/C
 // ----------------------------------------------------------------------------
 // Standard rendering code setup
 // ----------------------------------------------------------------------------
-function piecewise()
+function piecewisefunction()
 {
-    const controlPanel = 
-    `
-      <button class="btnWidget" onclick="location.href='http://localhost:8080/'">Home Page</button></table>
-    `;
     
 const rootContainer = document.querySelector(
     '.vtk-js-example-piecewise-gaussian-widget'
@@ -35,6 +31,54 @@ const urlToLoad = rootContainer ?
     'https://kitware.github.io/vtk-js/data/volume/LIDC2.vti' :
     `https://kitware.github.io/vtk-js/data/volume/LIDC2.vti`;
 
+const controlPanel = 
+`
+<style>
+body{
+    background:rgb(0,0,0);  
+}
+.divhomepage{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  width:300px;
+  border:0;
+  background:rgb(0,0,0);
+}
+.btnhomepage {
+  display:flex;
+  background-color: #c2fbd7;
+  border-radius: 100px;
+  box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset,rgba(44, 187, 99, .15) 0 1px 2px,rgba(44, 187, 99, .15) 0 2px 4px,rgba(44, 187, 99, .15) 0 4px 8px,rgba(44, 187, 99, .15) 0 8px 16px,rgba(44, 187, 99, .15) 0 16px 32px;
+  color: green;
+  cursor: pointer;
+  font-family: cursive;
+  text-align: center;
+  text-decoration: none;
+  transition: all 250ms;
+  border: 0;
+  font-size: 15px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  color: black;
+  font-weight: bold;
+}
+
+.btnhomepage:hover {
+  box-shadow: rgba(44,187,99,.35) 0 -25px 18px -14px inset,rgba(44,187,99,.25) 0 1px 2px,rgba(44,187,99,.25) 0 2px 4px,rgba(44,187,99,.25) 0 4px 8px,rgba(44,187,99,.25) 0 8px 16px,rgba(44,187,99,.25) 0 16px 32px;
+  transform: scale(1.05) rotate(-1deg);
+  border:0;
+}
+
+</style>
+<div class="divhomepage">
+<button class="btnhomepage" onclick="location.href='http://localhost:8080/'">Home Page</button>
+</div>
+
+`;
+
 const fullScreenRenderer = vtkFullScreenRenderWindow.newInstance({
     background: [0, 0, 0],
     rootContainer,
@@ -42,6 +86,7 @@ const fullScreenRenderer = vtkFullScreenRenderWindow.newInstance({
 });
 const renderer = fullScreenRenderer.getRenderer();
 const renderWindow = fullScreenRenderer.getRenderWindow();
+
 
 renderWindow.getInteractor().setDesiredUpdateRate(15.0);
 
@@ -110,6 +155,7 @@ labelContainer.addEventListener('click', (event) => {
 // ----------------------------------------------------------------------------
 // Example code
 // ----------------------------------------------------------------------------
+
 
 const widget = vtkPiecewiseGaussianWidget.newInstance({
     numberOfBins: 256,
@@ -182,6 +228,8 @@ actor.getProperty().setRGBTransferFunction(0, lookupTable);
 actor.getProperty().setScalarOpacity(0, piecewiseFunction);
 actor.getProperty().setInterpolationTypeToFastLinear();
 
+
+
 // ----------------------------------------------------------------------------
 // Default setting Piecewise function widget
 // ----------------------------------------------------------------------------
@@ -211,6 +259,8 @@ widget.onOpacityChange(() => {
 // Expose variable to global namespace
 // ----------------------------------------------------------------------------
 
+
 global.widget = widget;
+
 }
-export default piecewise;
+export default piecewisefunction;
