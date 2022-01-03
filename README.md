@@ -84,3 +84,8 @@ const chestbtn = document.querySelector('#chestbtn');
 
 ![](./Screens/full_project.gif)
 
+> Finially applying some animations and home page.<br>
+
+
+![](./Screens/project-with-animations.gif)
+
