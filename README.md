@@ -1,6 +1,6 @@
 # Computer Graphics VTK.js Project
 
-## About Our Project
+## Introduction
 
 ### First, we disscused some examples supported by VTK.js website to understand the mechanism of it.
  Then we build our project by rendering three differnet widgets:
